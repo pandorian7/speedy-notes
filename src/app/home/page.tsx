@@ -19,6 +19,8 @@ import {
   Lightbulb
 } from 'lucide-react';
 import styles from './Home.module.css';
+import { signOut } from '@firebase/auth';
+import { auth } from '@/lib/firebase';
 
 const HomePage = () => {
   const [viewMode, setViewMode] = useState('list');
@@ -101,7 +103,7 @@ const HomePage = () => {
             <button className={styles.headerButton}>
               <Settings className={styles.headerButtonIcon} />
             </button>
-            <button className={styles.headerButton}>
+            <button className={styles.headerButton} onClick={() => {signOut(auth)}}>
               <User className={styles.headerButtonIcon} />
             </button>
           </div>

@@ -3,12 +3,34 @@
 import React from "react";
 import Link from "next/link";
 import styles from "./page.module.css";
+import { useRouter } from "next/navigation";
 
+
+import { auth, googleProvider } from "@/lib/firebase";
+import { signInWithPopup } from "firebase/auth";
 interface HomeProps {
   user?: boolean;
 }
 
 const Home: React.FC<HomeProps> = ({ user }) => {
+
+  const router = useRouter();
+
+  const handleEnter = async () => {
+    console.log(auth)
+    if (auth.currentUser) {
+      router.push("/home");
+    } else {
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        router.push("/home");
+        console.log(result.user);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
   return (
     <div className={styles["home-container"]}>
       {/* Hero Section */}
@@ -42,12 +64,9 @@ const Home: React.FC<HomeProps> = ({ user }) => {
             <div className={styles["hero-buttons"]}>
               {!user ? (
                 <>
-                  <Link href="/signup" className={`${styles["cta-button"]} ${styles["primary"]}`}>
+                  <div className={`${styles["cta-button"]} ${styles["primary"]}`} onClick={handleEnter}>
                     Start Taking Notes
-                  </Link>
-                  <Link href="/login" className={`${styles["cta-button"]} ${styles["secondary"]}`}>
-                    Log In
-                  </Link>
+                  </div>
                 </>
               ) : (
                 <>
@@ -63,7 +82,7 @@ const Home: React.FC<HomeProps> = ({ user }) => {
           </div>
 
           {/* Hero Visual Cards */}
-          
+
         </div>
       </section>
 
@@ -159,7 +178,7 @@ const Home: React.FC<HomeProps> = ({ user }) => {
         </div>
       </section>
 
-     
+
 
       {/* CTA Section */}
       <section className={styles["cta-section"]}>
