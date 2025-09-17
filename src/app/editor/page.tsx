@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   Bold, Italic, Underline, List, ListOrdered, AlignLeft, AlignCenter, AlignRight,
-  Download, Save, FileText, Undo, Redo, Share2, Printer
+  Download, Undo, Redo, Share2, FileText, Printer
 } from 'lucide-react';
 import styles from './Editor.module.css';
 
@@ -22,7 +22,7 @@ const collaborators: User[] = [
 const SpeedyNotesEditor: React.FC = () => {
   const [documentState, setDocumentState] = useState({
     title: 'Untitled Document',
-    content: '<p>Welcome to SpeedyNotes!</p><p>This is a collaborative note-taking application.</p>',
+    content: 'Welcome to SpeedyNotes!\nThis is a collaborative note-taking application.',
     lastSaved: new Date(),
   });
   const [isAutoSaving, setIsAutoSaving] = useState(false);
@@ -30,18 +30,15 @@ const SpeedyNotesEditor: React.FC = () => {
   const [showShareModal, setShowShareModal] = useState(false);
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
-  const [currentFormat, setCurrentFormat] = useState({
-    bold: false,
-    italic: false,
-    underline: false,
-  });
-  const [mounted, setMounted] = useState(false); // Prevent SSR issues
+  const [currentFormat, setCurrentFormat] = useState({ bold: false, italic: false, underline: false });
+  const [mounted, setMounted] = useState(false);
 
   const editorRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => setMounted(true), []);
 
+  // Save to history for undo/redo
   const saveToHistory = useCallback(() => {
     if (editorRef.current) {
       const content = editorRef.current.innerHTML;
@@ -54,10 +51,11 @@ const SpeedyNotesEditor: React.FC = () => {
     }
   }, [historyIndex]);
 
+  // Auto-save
   useEffect(() => {
     if (editorRef.current && history.length === 0) saveToHistory();
 
-    const autoSaveInterval = setInterval(() => {
+    const interval = setInterval(() => {
       if (editorRef.current && editorRef.current.innerHTML !== documentState.content) {
         setIsAutoSaving(true);
         setTimeout(() => {
@@ -71,61 +69,60 @@ const SpeedyNotesEditor: React.FC = () => {
       }
     }, 3000);
 
-    return () => clearInterval(autoSaveInterval);
+    return () => clearInterval(interval);
   }, [documentState.content, history.length, saveToHistory]);
 
-  useEffect(() => {
-    if (editorRef.current && history.length > 0) {
-      editorRef.current.innerHTML = history[historyIndex];
-    }
-  }, [historyIndex, history]);
-
-  const updateFormatState = useCallback(() => {
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return;
-    const range = selection.getRangeAt(0);
-    const parentElement = range.commonAncestorContainer.nodeType === Node.TEXT_NODE
-      ? range.commonAncestorContainer.parentElement
-      : range.commonAncestorContainer as HTMLElement;
-
-    if (parentElement) {
-      setCurrentFormat({
-        bold: !!parentElement.closest('strong, b'),
-        italic: !!parentElement.closest('em, i'),
-        underline: !!parentElement.closest('u'),
-      });
-    }
-  }, []);
-
+  // Apply command
   const execCmd = (command: string, value?: string) => {
     saveToHistory();
     document.execCommand(command, false, value);
     editorRef.current?.focus();
-    updateFormatState();
+    updateCurrentFormat();
   };
 
-  const handleInput = () => {
-    if (editorRef.current) {
-      setDocumentState(prev => ({ ...prev, content: editorRef.current?.innerHTML || '' }));
-    }
+  // Update toolbar format
+  const updateCurrentFormat = () => {
+    setCurrentFormat({
+      bold: document.queryCommandState('bold'),
+      italic: document.queryCommandState('italic'),
+      underline: document.queryCommandState('underline'),
+    });
   };
 
+  // Listen to selection changes for toolbar updates
+  useEffect(() => {
+    const handleSelectionChange = () => {
+      updateCurrentFormat();
+    };
+    document.addEventListener('selectionchange', handleSelectionChange);
+    return () => document.removeEventListener('selectionchange', handleSelectionChange);
+  }, []);
+
+  // Undo / Redo
   const undo = () => { if (historyIndex > 0) setHistoryIndex(prev => prev - 1); };
   const redo = () => { if (historyIndex < history.length - 1) setHistoryIndex(prev => prev + 1); };
 
+  // Word / Character count
   const getWordCount = () => {
     const text = editorRef.current?.innerText || '';
     return text.trim() ? text.trim().split(/\s+/).length : 0;
   };
-
   const getCharCount = () => editorRef.current?.innerText?.length || 0;
 
+  // Export
   const handleExport = () => {
     const format = (document.querySelector<HTMLInputElement>('input[name="format"]:checked')?.value) || 'pdf';
     if (format === 'pdf') window.print();
     else alert(`Exporting as ${format}...`);
     setShowExportModal(false);
   };
+
+  // Update editor content on history change
+  useEffect(() => {
+    if (editorRef.current && historyIndex >= 0 && history.length > 0) {
+      editorRef.current.innerHTML = history[historyIndex];
+    }
+  }, [historyIndex, history]);
 
   return (
     <div className={styles.speedynotesContainer}>
@@ -141,12 +138,10 @@ const SpeedyNotesEditor: React.FC = () => {
             type="text"
             className={styles.documentTitle}
             value={documentState.title}
-            onChange={(e) => setDocumentState(prev => ({ ...prev, title: e.target.value }))}
+            onChange={e => setDocumentState(prev => ({ ...prev, title: e.target.value }))}
           />
           <div className={styles.documentStatus}>
-            {isAutoSaving
-              ? <div>Saving...</div>
-              : mounted && <span>Last saved: {documentState.lastSaved.toLocaleTimeString()}</span>}
+            {isAutoSaving ? 'Saving...' : mounted && `Last saved: ${documentState.lastSaved.toLocaleTimeString()}`}
           </div>
         </div>
         <div className={styles.headerActions}>
@@ -186,11 +181,10 @@ const SpeedyNotesEditor: React.FC = () => {
           className={styles.editor}
           contentEditable
           suppressContentEditableWarning
-          onInput={handleInput}
-          onMouseUp={updateFormatState}
-          onKeyUp={updateFormatState}
-          dangerouslySetInnerHTML={{ __html: documentState.content }}
-        />
+          onInput={() => setDocumentState(prev => ({ ...prev, content: editorRef.current?.innerHTML || '' }))}
+        >
+          {documentState.content}
+        </div>
       </div>
 
       {/* Status */}
@@ -219,7 +213,7 @@ const SpeedyNotesEditor: React.FC = () => {
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
             <h2>Share Document</h2>
-            <p>Share functionality would be implemented here.</p>
+            <p>Share functionality will be implemented here.</p>
             <div className={styles.modalActions}>
               <button onClick={() => setShowShareModal(false)}>Close</button>
             </div>
