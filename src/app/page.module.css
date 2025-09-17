@@ -130,10 +130,12 @@
 }
 
 .section-header {
+  
   margin-bottom: 3rem;
 }
 
 .hero-title2 {
+  margin-top: -10px;
   font-size: 2rem;
   font-weight: 700;
   color: #5025eb;
@@ -171,7 +173,7 @@
 .feature-content h3 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #2563eb;
+  color: #6025eb;
   margin-bottom: 0.5rem;
 }
 
@@ -190,7 +192,7 @@
 }
 
 .feature-card.feature {
-  border: 2px solid #2563eb;
+  border: 2px solid #6025eb;
   position: relative;
 }
 
@@ -199,7 +201,7 @@
   top: -10px;
   left: 50%;
   transform: translateX(-50%);
-  background: #2563eb;
+  background: #6025eb;
   color: #fff;
   font-size: 0.75rem;
   font-weight: 600;
@@ -214,6 +216,7 @@
   padding: 3rem 1rem;
   border-radius: 1rem;
   margin-bottom: 4rem;
+ 
 }
 
 .benefits-list {
@@ -242,13 +245,13 @@
 
 .benefit-icon {
   font-size: 2rem;
-  color: #2563eb;
+  color: #6a25eb;
 }
 
 /* ===== CTA Section ===== */
 .cta-section {
   margin-top: -70px;
-  background: linear-gradient(135deg, #031742, #2563eb);
+  background: linear-gradient(135deg, #031742, #6025eb);
   padding: 3rem 1rem;
   text-align: center;
   

@@ -67,10 +67,7 @@ const HomePage = () => {
 
   const templates = [
     { icon: Plus, label: "Blank", isNew: true },
-    { icon: FileText, label: "Note" },
-    { icon: BookOpen, label: "Journal" },
-    { icon: Calendar, label: "Planner" },
-    { icon: Lightbulb, label: "Ideas" }
+    
   ];
 
   const createNewNote = () => {

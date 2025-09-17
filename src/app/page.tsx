@@ -12,6 +12,7 @@ const Home: React.FC<HomeProps> = ({ user }) => {
   return (
     <div className={styles["home-container"]}>
       {/* Hero Section */}
+      
       <section className={styles["hero-section"]}>
         <div className={styles["hero-content"]}>
           <div className={styles["hero-text"]}>
@@ -45,9 +46,7 @@ const Home: React.FC<HomeProps> = ({ user }) => {
                   <Link href="/signup" className={`${styles["cta-button"]} ${styles["primary"]}`}>
                     Start Taking Notes
                   </Link>
-                  <Link href="/login" className={`${styles["cta-button"]} ${styles["secondary"]}`}>
-                    Log In
-                  </Link>
+                 
                 </>
               ) : (
                 <>
