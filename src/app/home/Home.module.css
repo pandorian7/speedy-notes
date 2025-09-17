@@ -1,0 +1,370 @@
+
+/* Home.module.css */
+
+.container {
+  font-family: 'Inter', sans-serif;
+  background: #ffffff;
+  color: #333333;
+  min-height: 100vh;
+}
+
+/* Header */
+.header {
+  width: 100%;
+  padding: 1rem 2rem;
+  background: #fff8f1;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.headerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logoIcon {
+  width: 2rem;
+  height: 2rem;
+  background: #ff7f50;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoIconSvg {
+  color: white;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.logoText {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ff7f50;
+}
+
+.headerActions {
+  display: flex;
+  gap: 1rem;
+}
+
+.headerButton {
+  background: #fff;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.headerButton:hover {
+  background: #ffe3d8;
+}
+
+.headerButtonIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #ff7f50;
+}
+
+/* Main */
+.main {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+/* Welcome Section */
+.welcomeSection {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.welcomeTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ff7f50;
+  margin-bottom: 0.5rem;
+}
+
+.welcomeSubtitle {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Templates Section */
+.templateSection {
+  margin-bottom: 4rem;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ff7f50;
+  margin-bottom: 1rem;
+}
+
+.templateGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1.5rem;
+}
+
+.templateCard {
+  background: #fff8f1;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+}
+
+.templateCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.newNote {
+  background: #ff7f50;
+  color: white;
+}
+
+.templateIcon, .newNoteIcon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.newNoteIcon {
+  color: white;
+}
+
+.templateLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Recent Notes Section */
+.recentSection {
+  margin-bottom: 4rem;
+}
+
+.recentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.viewOptions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.viewButton {
+  background: #fff8f1;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.viewButton.active, .viewButton:hover {
+  background: #ff7f50;
+}
+
+.viewButtonIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #ff7f50;
+}
+
+.viewButton.active .viewButtonIcon {
+  color: white;
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 2rem;
+  color: #ff7f50;
+}
+
+.emptyIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.emptyTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.emptyDescription {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Notes List */
+.notesList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.noteItem {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1rem;
+  background: #fff8f1;
+  border-radius: 1rem;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.noteItem:hover {
+  transform: translateY(-3px);
+}
+
+.noteIcon {
+  font-size: 1.5rem;
+  color: #ff7f50;
+  margin-right: 1rem;
+}
+
+.noteContent {
+  flex: 1;
+}
+
+.noteTitle {
+  font-weight: 600;
+  color: #ff7f50;
+  margin-bottom: 0.25rem;
+}
+
+.notePreview {
+  font-size: 0.875rem;
+  color: #555;
+}
+
+.noteInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.75rem;
+  color: #777;
+  margin-left: 1rem;
+}
+
+.noteActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 1rem;
+}
+
+.actionButton {
+  background: #fff;
+  border: none;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.actionButton:hover {
+  background: #ffe3d8;
+}
+
+.actionButtonIcon {
+  color: #ff7f50;
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Notes Grid */
+.notesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.noteCard {
+  background: #fff8f1;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.noteCard:hover {
+  transform: translateY(-5px);
+}
+
+.noteCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.noteCardIcon {
+  font-size: 1.5rem;
+  color: #ff7f50;
+}
+
+.noteCardTitle {
+  font-weight: 600;
+  color: #ff7f50;
+}
+
+.noteCardContent {
+  font-size: 0.875rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.noteCardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.noteCardDate {
+  font-size: 0.75rem;
+  color: #777;
+}
+
+.noteCardActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .headerContent {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .recentHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
